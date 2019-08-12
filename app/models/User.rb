@@ -62,4 +62,16 @@ class User
       allergy.user == self
     end.map { |allergy| allergy.ingredient }
   end
+
+  # User#safe_recipes should return all recipes that do not contain ingredients the user is allergic to
+  def safe_recipes
+    # iterate through all recipes' ingredients
+    Recipe.all.find_all do |recipe|
+      !recipe.allergens.any? do |allergen|
+        self.allergens.include?(allergen)
+      end
+    end
+    # see if recipe ingredients match any user allergies
+    # add recipe to return array only if all == false
+  end
 end
